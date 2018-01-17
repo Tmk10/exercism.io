@@ -1,26 +1,22 @@
-import re
-
-
 def decode(string):
+    string_array = list(string)
     decoded_string = ""
-    for i in range(len(string)):
-        try:
-            int(string[i])
-        except ValueError:
-            decoded_string += string[i]
-        else:
-            decoded_string += int(string[i]) * string[i + 1]
+    while string_array:
+        if not string_array[0].isdigit():
+            decoded_string += string_array[0]
+            string_array = string_array[1:]
+        elif string_array[0].isdigit() and string_array[1].isdigit():
+            string_array[0] = string_array[0] + string_array[1]
+            string_array.pop(1)
+        elif string_array[0].isdigit() and not string_array[1].isdigit():
+            decoded_string += int(string_array[0]) * string_array[1]
+            string_array = string_array[2:]
     return decoded_string
-
 
 def encode(string):
     encoded_string = ""
     while string:
-        encoded_string += str(len(string) - len(string.lstrip(string[0]))) + string[0]
+        encoded_string += string[0] if (len(string) - len(string.lstrip(string[0]))) == 1 else str(
+            len(string) - len(string.lstrip(string[0]))) + string[0]
         string = string.lstrip(string[0])
-    # return encoded_string.replace("1{1}\D", "")
-    return re.sub("1{1}\D", encoded_string,"")
-
-
-print(encode("XYZzzzxzcasd"))
-print(decode("ab2c2afg4 "))
+    return encoded_string
