@@ -1,7 +1,11 @@
 def say(number):
-    result_string = ""
-    list_from_number = "{:,}".format(number).split(",")
-    len_of_list = len(list_from_number)
+    if int(number) < 0 or int(number) >= 1e12:
+        raise ValueError("Incorrect number")
+    number=int(number)
+    list_from_number = [int(item) for item in "{:,}".format(number).split(",")]
+    result_string=""
+    if number == 0:
+        result_string = "zero"
     non_reapeting_numbers = {
         0: "zero",
         1: "one",
@@ -32,37 +36,26 @@ def say(number):
         80: "eighty",
         90: "ninety"
     }
-    scale = (
-        "hundred",
-        "thousand",
-        "million",
-        "billion",
-    )
-    print(list_from_number)
-    print(len(list_from_number))
+    scale = {
+
+        2: "thousand",
+        3: "million",
+        4: "billion",
+    }
     for item in list_from_number:
-        for digit in item:
-            if len(item) == 3 and item[1] != "0":
-                result_string += (non_reapeting_numbers[int(digit)] + " " + scale[0] + " and ")
-                item = item[1:]
-                continue
-            elif len(item) == 3 and item[1] == "0":
-                result_string += (non_reapeting_numbers[int(digit)] + " " + scale[0])
-                item = item[1:]
-                continue
-            elif len(item) == 2 and item != 0 and item[1] != "0":
-                result_string += (non_reapeting_numbers[int(digit + "0")]) + "-"
-                item = item[1:]
-                continue
-            elif len(item) == 2 and digit != "0" and item[1] == "0":
-                result_string += (non_reapeting_numbers[int(digit + "0")])
-                item = item[2:]
-                continue
-            elif len(item) == 1 and digit != "0":
-                result_string += (non_reapeting_numbers[int(digit)] + "")
-        result_string += " " + scale[len(list_from_number) - 1] + " " if len(list_from_number) > 1 else ""
+        main = item // 100
+        reminder = item - (main * 100)
+        if main:
+            result_string += non_reapeting_numbers[main] + " hundred" if main * 100 == item else non_reapeting_numbers[
+                                                                                               main] + " hundred" + " and "
+        if reminder:
+            result_string += non_reapeting_numbers[reminder] if reminder % 10 ==0 or reminder < 20 else non_reapeting_numbers[reminder //10 * 10] + "-" + non_reapeting_numbers[reminder % 10]
+
+        if item > 0:
+            result_string += " " + scale[len(list_from_number)] + " " if len(list_from_number) > 1 else ""
+
         list_from_number = list_from_number[1:]
-    return result_string
 
+    return result_string.rstrip()
 
-print(say(100))
+print(say(1e10))
