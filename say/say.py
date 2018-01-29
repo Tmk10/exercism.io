@@ -58,4 +58,3 @@ def say(number):
 
     return result_string.rstrip()
 
-print(say(1e10))

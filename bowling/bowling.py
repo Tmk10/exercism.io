@@ -14,10 +14,17 @@ class BowlingGame(object):
 
     def roll(self, pins):
         if not self.status:
-            if sum(self.frame_table[self.frame -2]) == 10:
+            if pins < 0 or pins > 10:
+                raise ValueError("Wrong number of pins")
+            if sum(self.frame_table[self.frame - 2]) == 10:
                 self.frame_table.extend([pins])
+                if len(self.frame_table) == 12 and self.frame_table[self.frame - 1] != 10 and self.frame_table[
+                            self.frame - 1] + \
+                        self.frame_table[self.frame] > 10:
+                    raise ValueError("To many points in frame")
+                self.rolls.append(pins)
             else:
-                return "Game Over"
+                raise IndexError("You got no more rolls")
         if self.status == True:
             if pins < 0 or pins > 10:
                 raise ValueError("Wrong number of pins")
@@ -35,45 +42,18 @@ class BowlingGame(object):
             return "Game Over"
 
     def score(self):
+        if self.status:
+            raise IndexError("Game not finished")
         if self.status == False:
-            for frame in self.frame_table:
-                if self.strike_or_spare(frame) == "strike":
+            for frame in range(0, 10):
+                if self.strike_or_spare(self.frame_table[frame]) == "strike":
                     self.total_score += self.rolls[0] + self.rolls[1] + self.rolls[2]
                     self.rolls = self.rolls[1:]
 
-                elif self.strike_or_spare(frame) == "spare":
+                elif self.strike_or_spare(self.frame_table[frame]) == "spare":
                     self.total_score += self.rolls[0] + self.rolls[1] + self.rolls[2]
                     self.rolls = self.rolls[2:]
                 else:
                     self.total_score += self.rolls[0] + self.rolls[1]
                     self.rolls = self.rolls[2:]
             return self.total_score
-        return "Game not ended yet"
-
-
-a = BowlingGame()
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(0)
-a.roll(10)
-a.roll(10)
-a.roll(10)
-print(a.score())
-print(a.frame_table)
-print(a.frame_table[11])
