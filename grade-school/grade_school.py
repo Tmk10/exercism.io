@@ -19,12 +19,4 @@ class School(object):
         return result
 
 
-a = School("Szkola")
-a.add("Balwanek", 3)
-a.add("Pszenek", 1)
-a.add("Marysia", 2)
-a.add("Asia", 2)
-a.add("Stefanek", 3)
-a.add("Adamek", 3)
 
-print(a.sort())
