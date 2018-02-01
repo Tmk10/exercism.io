@@ -8,8 +8,6 @@ def round_decorator(f):
 
 class SpaceAge:
     def __init__(self, seconds):
-        self.__seconds = seconds
-        self.__earth_year = 31557600
         self.__earth_time = seconds / 31557600
 
     def __call__(self, value):
