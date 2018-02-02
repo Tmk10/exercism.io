@@ -10,10 +10,3 @@ class Luhn(object):
             return not bool(a)
         return False
 
-
-
-
-
-
-a = Luhn("4539 1488 0343 6467")
-print(a.is_valid())
